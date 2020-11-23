@@ -10,7 +10,7 @@ public class CamModel extends AgeableModel {
 	private final ModelRenderer model;
 	
 	public CamModel() {
-		this.model = new ModelRenderer(16,16,0,0);
+		this.model = new ModelRenderer(18, 9, 0,0);
 		this.model.addBox(-4, -8, -4, 8, 8, 1);
 		this.model.setRotationPoint(0, 4, 4);
 	}
