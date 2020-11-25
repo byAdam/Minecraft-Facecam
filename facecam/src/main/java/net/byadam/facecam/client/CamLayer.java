@@ -35,7 +35,7 @@ public class CamLayer<T extends LivingEntity, M extends EntityModel<T>> extends 
       
       
       //TODO: Make this use UUID
-      TextureLocation = new ResourceLocation("webcams", "webcam/adam");
+      TextureLocation = new ResourceLocation("webcams", "webcam/"+uuid.toString());
    }
 
    // Render Model

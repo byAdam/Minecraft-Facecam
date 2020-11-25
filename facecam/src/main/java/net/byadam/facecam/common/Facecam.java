@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 
 import net.minecraftforge.client.ForgeHooksClient;
 import net.byadam.facecam.client.CamLayer;
+import net.byadam.facecam.client.FacecamClient;
+import net.byadam.facecam.client.WebcamSenderThread;
 import net.byadam.facecam.client.WebcamsRP;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
@@ -47,8 +49,8 @@ public class Facecam
 {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
-    private CamThread camThread;
- 
+    public static FacecamPacketHandler packetHandler = new FacecamPacketHandler();
+    public static FacecamClient facecamClient;
 
     public Facecam() {
         // Register the setup method for modloading
@@ -57,57 +59,17 @@ public class Facecam
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void setup(final FMLCommonSetupEvent event){}
-
-    private void clientSetup(final FMLClientSetupEvent event) {
-        // Add resource pack to pack list
-        Minecraft.getInstance().getResourcePackList().addPackFinder(new IPackFinder() {
-			@Override
-			public void findPacks(Consumer<ResourcePackInfo> infoConsumer, IFactory infoFactory) {
-				ResourcePackInfo resourcepackinfo = ResourcePackInfo.createResourcePack("webcams", true, () -> new WebcamsRP(), infoFactory, ResourcePackInfo.Priority.TOP, IPackNameDecorator.BUILTIN);
-		        infoConsumer.accept(resourcepackinfo);
-        }});
-        
-        // Reload all resource packs
-        Minecraft.getInstance().getResourcePackList().reloadPacksFromFinders();
-        
-        // Start camera thread (TO BE CHANGED)
+    private void setup(final FMLCommonSetupEvent event)
+    {
+    	packetHandler.register();
     }
-
 
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {}
     
-    public void addWebcamsToTextureManager()
-    {
- 	   SimpleReloadableResourceManager resourceManager =  ObfuscationReflectionHelper.getPrivateValue(TextureManager.class, Minecraft.getInstance().getTextureManager(), "resourceManager");
-  	  
- 	   // If facecamrp already in texture manager's resource manager
- 	   if(resourceManager.getResourceNamespaces().contains("webcams")){return;}
- 	   
- 	   // If not, loop through all resource backs, find facecamrp, and add it
-  	   for(ResourcePackInfo rp: Minecraft.getInstance().getResourcePackList().getEnabledPacks())
-  	   {
-  		   if(rp.getName() == "facecamrp")
-  		   {
-  			   resourceManager.addResourcePack(rp.getResourcePack());
-  		   }
-  	   }
+    private void clientSetup(final FMLClientSetupEvent event) {
+    	facecamClient = new FacecamClient();
     }
-    
-    // When player is rendered
-	@SubscribeEvent
-    public void onPlayerRender(RenderPlayerEvent.Pre event) 
-    {
-    	// TODO: Move this somewhere better 
-    	addWebcamsToTextureManager();
-    	
-    	UUID playerUUID = event.getPlayer().getUniqueID();
-    	
-    	// For every 'skin' on the player, add the cam layer
-		for (PlayerRenderer render : event.getRenderer().getRenderManager().getSkinMap().values()) 
-		{
-		    render.addLayer(new CamLayer(render, playerUUID));
-		}
-    }
+
+
 }
