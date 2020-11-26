@@ -45,23 +45,14 @@ import net.minecraftforge.common.extensions.IForgeResourcePack;
 public  class WebcamsRP implements IResourcePack { 
 	// TODO: Replace with relative path
 	private static Path basePath = Paths.get("/assets/facecam/");
-	BufferedImage template;
-	
-	Map<UUID, InputStream> uuidStream = new HashMap<UUID, InputStream>();
-	Map<UUID, Long> uuidUpdate = new HashMap<UUID, Long>();
-
 	
     public WebcamsRP ( ) { 
-		try {
-			template = ImageIO.read(getRootResourceStream("template.jpg"));
-		} catch (Exception e) {
-		}
     }
     
     @Override
     public InputStream getRootResourceStream(String fileName) throws IOException
     {
-    	return Minecraft.getInstance().getResourceManager().getResource(new ResourceLocation("webcams_i"+ "", fileName)).getInputStream();
+    	return Minecraft.getInstance().getResourceManager().getResource(new ResourceLocation("webcams_i", fileName)).getInputStream();
     }
     
     private boolean isImageValid(ByteArrayOutputStream image) throws IOException {
@@ -72,16 +63,6 @@ public  class WebcamsRP implements IResourcePack {
             return false;
         }
         return true;
-    }
-    
-    String timeElapsed(long start)
-    {
-    	return String.valueOf(System.currentTimeMillis()-start);
-    }
-    
-    void pasteWebcamOntoTemplate(byte Webcam[])
-    {
-    	
     }
 
     @Override
@@ -101,30 +82,15 @@ public  class WebcamsRP implements IResourcePack {
   
     		UUID uuid = UUID.fromString(stringUUID);
     		
-    		byte imageBytes[] = Facecam.facecamClient.webcamData.getInstance().uuidImageMap.get(uuid);
-
-    		
-    
-    		long currentTime = System.currentTimeMillis();
-    		
-      		return getRootResourceStream("backup.png");
-    		
-    		/*if(imageBytes != null)
-    		{	
-    			BufferedImage webcam = ImageIO.read(new ByteArrayInputStream(imageBytes)); // 3ms
-    			Graphics2D graphics = template.createGraphics(); // 0ms
-    			graphics.drawImage(webcam, 28, 28, null); // 0ms
-    			ByteArrayOutputStream oStream = new ByteArrayOutputStream(); // 0ms
-    			ImageIO.write(template, "JPEG", oStream); // 5mms
-    			ByteArrayInputStream iStream = new ByteArrayInputStream(oStream.toByteArray()); //0ms
-    			
-    			uuidUpdate.put(uuid, System.currentTimeMillis());
-    			uuidStream.put(uuid, iStream);
-    			return iStream;
+    		ByteArrayOutputStream oStream = Facecam.facecamClient.webcamData.getInstance().uuidStream.get(uuid);
+ 
+    		if(oStream != null)
+    		{
+    			return new ByteArrayInputStream(oStream.toByteArray());
     		}
     
 
-    		return getRootResourceStream("backup.png");*/
+    		return getRootResourceStream("backup.png");
   
     	}
     	else
@@ -139,14 +105,7 @@ public  class WebcamsRP implements IResourcePack {
 		return null;
     	
     }
-    
-    public ByteArrayInputStream cloneInputStream(InputStream iStream) throws IOException
-    {
-    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    	IOUtils.copy(iStream, baos);
-    	return new ByteArrayInputStream(baos.toByteArray());
-    }
-    
+
     
     @Override
     public Collection<ResourceLocation> getAllResourceLocations(ResourcePackType type, String namespaceIn, String pathIn, int maxDepthIn, Predicate<String> filterIn)
@@ -195,8 +154,7 @@ public  class WebcamsRP implements IResourcePack {
        try (InputStream inputstream = getRootResourceStream("pack.mcmeta")) {
           return ResourcePack.getResourceMetadata(deserializer, inputstream);
        } catch (FileNotFoundException | RuntimeException runtimeexception) {
-    	   throw(runtimeexception);
-          //return (T)null;
+          return (T)null;
        }
     }
 

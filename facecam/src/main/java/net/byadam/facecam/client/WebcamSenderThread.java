@@ -39,6 +39,7 @@ public class WebcamSenderThread implements Runnable {
 		{		
 			try {
 				loop();
+				Thread.sleep(40);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -67,8 +68,7 @@ public class WebcamSenderThread implements Runnable {
 		    
 		    ImageIO.write(newCamImage, "JPEG", os);
 	
-			Facecam.packetHandler.sendToServer(new FacecamMessage(uuid, os.toByteArray()));
+		    Facecam.packetHandler.sendToServer(new FacecamMessage(uuid, os.toByteArray()));
 		}
-		Thread.sleep(40);
 	}
 }

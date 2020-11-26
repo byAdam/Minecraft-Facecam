@@ -19,7 +19,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 @OnlyIn(Dist.CLIENT)
 public class CamLayer<T extends LivingEntity, M extends EntityModel<T>> extends LayerRenderer<T, M> {
@@ -27,14 +26,12 @@ public class CamLayer<T extends LivingEntity, M extends EntityModel<T>> extends 
    private ResourceLocation TextureLocation;
    private final CamModel camModel = new CamModel();
    // Cached textures in texture manager, to be removed when pulling new texture
-   private Map<String, Texture> mapTextureObjects =  ObfuscationReflectionHelper.getPrivateValue(TextureManager.class, Minecraft.getInstance().getTextureManager(), "mapTextureObjects");
    
 
    public CamLayer(IEntityRenderer<T, M> rendererIn, UUID uuid) {
       super(rendererIn);
       
       
-      //TODO: Make this use UUID
       TextureLocation = new ResourceLocation("webcams", "webcam/"+uuid.toString());
    }
 
@@ -48,7 +45,7 @@ public class CamLayer<T extends LivingEntity, M extends EntityModel<T>> extends 
        this.camModel.setRotationAngles(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
        
        // Remove cached texture
-	   mapTextureObjects.remove(TextureLocation);
+       Minecraft.getInstance().getTextureManager().deleteTexture(TextureLocation);
 	   
 	   // Build new face with new texture
        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntitySolid(TextureLocation));       
