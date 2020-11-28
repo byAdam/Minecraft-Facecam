@@ -18,6 +18,8 @@ import net.byadam.facecam.common.Facecam;
 import net.byadam.facecam.common.FacecamMessage;
 import net.minecraft.client.Minecraft;
 
+
+
 public class WebcamSenderThread implements Runnable {
 	
 	Thread t;
@@ -59,9 +61,9 @@ public class WebcamSenderThread implements Runnable {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			
 			BufferedImage oldCamImage = webcam.getImage();
-			Image scaledImage = oldCamImage.getScaledInstance(114, 114, Image.SCALE_FAST);
+			Image scaledImage = oldCamImage.getScaledInstance(128, 128, Image.SCALE_SMOOTH);
 			
-			BufferedImage newCamImage = new BufferedImage(114, 114, BufferedImage.TYPE_INT_ARGB);
+			BufferedImage newCamImage = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
 		    Graphics2D graphics = newCamImage.createGraphics();
 		    graphics.drawImage(scaledImage, 0, 0, null);
 		    graphics.dispose();

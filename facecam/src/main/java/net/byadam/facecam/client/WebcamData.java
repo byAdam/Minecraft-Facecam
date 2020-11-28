@@ -46,11 +46,14 @@ public class WebcamData implements Runnable{
 	
 	public void processRawImage(UUID uuid, byte[] rawImage) throws IOException
 	{
+		
 		BufferedImage webcam = ImageIO.read(new ByteArrayInputStream(rawImage)); // 3ms
 		Graphics2D graphics = template.createGraphics(); // 0ms
-		graphics.drawImage(webcam, 14, 14, null); // 0ms
+		graphics.drawImage(webcam, 0, 0, null); // 0ms
 		ByteArrayOutputStream oStream = new ByteArrayOutputStream(); // 0ms
-		ImageIO.write(template, "JPEG", oStream); // 5mms
+		ImageIO.write(template, "JPEG", oStream); // 5ms
+		
+		oStream.write(rawImage, 0, rawImage.length);
 		
 		uuidStream.put(uuid, oStream);
 	}
@@ -59,7 +62,7 @@ public class WebcamData implements Runnable{
 	public void run() {
 		// This line is horrible so TODO: Make it nicer
 		try {
-			template = ImageIO.read(Minecraft.getInstance().getResourceManager().getResource(new ResourceLocation("webcams_i", "template.jpg")).getInputStream());
+			template = ImageIO.read(Minecraft.getInstance().getResourceManager().getResource(new ResourceLocation("webcams_i", "template.png")).getInputStream());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

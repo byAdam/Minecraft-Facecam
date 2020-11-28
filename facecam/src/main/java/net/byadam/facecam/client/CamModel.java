@@ -11,8 +11,8 @@ public class CamModel extends AgeableModel {
 	
 	public CamModel() {
 		// Build Model Box
-		this.model = new ModelRenderer(18, 9, 0,0);
-		this.model.addBox(-4, -8, -4, 8, 8, 1);
+		this.model = new ModelRenderer(16, 8, 0,0);
+		this.model.addBox(-4, -8, -4, 8, 8, 0);
 		this.model.setRotationPoint(0, 4, 4);
 	}
 
@@ -31,5 +31,14 @@ public class CamModel extends AgeableModel {
 		// Match model rotations to player head rotation
 		this.model.rotateAngleY = netHeadYaw * ((float)Math.PI / 180F);
 		this.model.rotateAngleX = headPitch * ((float)Math.PI / 180F);
+		
+		if(entityIn.isSneaking())
+		{
+			this.model.setRotationPoint(0, 8.2f, 4);
+		}
+		else
+		{
+			this.model.setRotationPoint(0, 4, 4);
+		}
 	}
 }

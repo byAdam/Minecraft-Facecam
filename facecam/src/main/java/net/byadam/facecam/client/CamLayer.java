@@ -1,7 +1,10 @@
 package net.byadam.facecam.client;
 
 import java.util.Map;
+
 import java.util.UUID;
+
+import org.apache.logging.log4j.LogManager;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -21,6 +24,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
+
 
 @OnlyIn(Dist.CLIENT)
 public class CamLayer extends LayerRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> {
@@ -45,7 +51,9 @@ public class CamLayer extends LayerRenderer<AbstractClientPlayerEntity, PlayerMo
 					
 			   // Setting up Cam model
 		       matrixStackIn.push();
-		       matrixStackIn.translate(0.0D, -0.25D, -0.25D);
+		       
+			   matrixStackIn.translate(0.0D, -0.251D, -0.25D);
+
 		       this.getEntityModel().copyModelAttributesTo(this.camModel);
 		       this.camModel.setRotationAngles(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		       

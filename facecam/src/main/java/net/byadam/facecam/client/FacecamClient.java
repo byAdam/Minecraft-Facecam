@@ -56,8 +56,8 @@ public class FacecamClient {
 	
     public void addWebcamsToTextureManager()
     {
- 	   //SimpleReloadableResourceManager resourceManager =  ObfuscationReflectionHelper.getPrivateValue(TextureManager.class, Minecraft.getInstance().getTextureManager(), "resourceManager");
- 	   SimpleReloadableResourceManager resourceManager =  ObfuscationReflectionHelper.getPrivateValue(TextureManager.class, Minecraft.getInstance().getTextureManager(), "field_110582_d");
+ 	   SimpleReloadableResourceManager resourceManager =  ObfuscationReflectionHelper.getPrivateValue(TextureManager.class, Minecraft.getInstance().getTextureManager(), "resourceManager");
+ 	   //SimpleReloadableResourceManager resourceManager =  ObfuscationReflectionHelper.getPrivateValue(TextureManager.class, Minecraft.getInstance().getTextureManager(), "field_110582_d");
     	
  	   // If webcams already in texture manager's resource manager
  	   if(resourceManager.getResourceNamespaces().contains("webcams")){return;}
@@ -96,8 +96,8 @@ public class FacecamClient {
     		
     	boolean hasCamLayer = false;
     	// Checks if they have cam layer
-    	//List<LayerRenderer> defaultLayers = ObfuscationReflectionHelper.getPrivateValue(LivingRenderer.class, event.getRenderer().getRenderManager().getSkinMap().get("default"), "layerRenderers");
-    	List<LayerRenderer> defaultLayers = ObfuscationReflectionHelper.getPrivateValue(LivingRenderer.class, event.getRenderer().getRenderManager().getSkinMap().get("default"), "field_177097_h");
+    	List<LayerRenderer> defaultLayers = ObfuscationReflectionHelper.getPrivateValue(LivingRenderer.class, event.getRenderer().getRenderManager().getSkinMap().get("default"), "layerRenderers");
+    	//List<LayerRenderer> defaultLayers = ObfuscationReflectionHelper.getPrivateValue(LivingRenderer.class, event.getRenderer().getRenderManager().getSkinMap().get("default"), "field_177097_h");
 
       	for(LayerRenderer layer: defaultLayers)
       	{
