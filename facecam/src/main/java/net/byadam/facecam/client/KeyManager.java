@@ -65,11 +65,11 @@ public class KeyManager {
 		
 		if(facecamClient.transmitWebcam)
 		{
-			message = new StringTextComponent("§6§l[Facecam] §r§4Your Webcam Disabled");
+			message = new StringTextComponent("§6§l[Facecam] §r§4Webcam Disabled");
 		}
 		else
 		{
-			message = new StringTextComponent("§6§l[Facecam] §r§2Your Webcam Enabled");
+			message = new StringTextComponent("§6§l[Facecam] §r§2Webcam Enabled");
 		}
 	
 		
@@ -86,11 +86,11 @@ public class KeyManager {
 		
 		if(facecamClient.displayWebcams)
 		{
-			message = new StringTextComponent("§6§l[Facecam] §r§4All Webcams Disabled");
+			message = new StringTextComponent("§6§l[Facecam] §r§4Display Disabled");
 		}
 		else
 		{
-			message = new StringTextComponent("§6§l[Facecam] §r§2All Webcams Enabled");
+			message = new StringTextComponent("§6§l[Facecam] §r§2Display Enabled");
 		}
 	
 		
