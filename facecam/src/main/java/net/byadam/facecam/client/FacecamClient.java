@@ -35,6 +35,7 @@ public class FacecamClient {
 	
 	public WebcamSenderThread webcamSenderThread;
 	public WebcamData webcamData;
+	public boolean transmitWebcam = true;
 	
 	public FacecamClient()
 	{

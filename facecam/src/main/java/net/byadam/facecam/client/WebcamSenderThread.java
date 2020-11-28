@@ -17,6 +17,7 @@ import com.github.sarxos.webcam.Webcam;
 import net.byadam.facecam.common.Facecam;
 import net.byadam.facecam.common.FacecamMessage;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 
 
 
@@ -26,6 +27,8 @@ public class WebcamSenderThread implements Runnable {
 	Webcam webcam = Webcam.getDefault();
 	UUID uuid;
 	public WebcamSenderThread instance;
+	public boolean transmitWebcam = true;
+	ClientPlayerEntity clientPlayer;
 	
 	public WebcamSenderThread()
 	{		
@@ -40,21 +43,35 @@ public class WebcamSenderThread implements Runnable {
 		while(true)
 		{		
 			try {
-				loop();
+				clientPlayer = Minecraft.getInstance().player;
+
+				// Set UUID for sender
+				if(uuid == null && clientPlayer != null)
+				{
+					uuid = Minecraft.getInstance().player.getUniqueID();
+				}
+				
+				// If transmission enabled and connected to server
+				if(Facecam.facecamClient.transmitWebcam && clientPlayer != null)
+				{
+					LogManager.getLogger().info("Sending");
+					sendWebcam();
+				}
+
+				
 				Thread.sleep(20);
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
 				e.printStackTrace();
+				// Fail silently
 			}
 		}
 
 	}
 	
-	public void loop() throws InterruptedException, IOException
+	public void sendWebcam() throws InterruptedException, IOException
 	{
-		if(uuid == null && Minecraft.getInstance().player != null)
-		{
-			uuid = Minecraft.getInstance().player.getUniqueID();
-		}
 		
 		if(uuid != null)
 		{
