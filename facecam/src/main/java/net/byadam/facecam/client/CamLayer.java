@@ -32,11 +32,13 @@ import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
 public class CamLayer extends LayerRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> {
 
    private final CamModel camModel = new CamModel();
+   public static FacecamClient facecamClient;
    // Cached textures in texture manager, to be removed when pulling new texture
    
 
-   public CamLayer(IEntityRenderer rendererIn) {
+   public CamLayer(IEntityRenderer rendererIn, FacecamClient facecamClient) {
       super(rendererIn);
+      this.facecamClient = facecamClient;
    }
 
 	@Override
@@ -44,8 +46,8 @@ public class CamLayer extends LayerRenderer<AbstractClientPlayerEntity, PlayerMo
 			AbstractClientPlayerEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks,
 			float ageInTicks, float netHeadYaw, float headPitch) {
 		  
-		if(entitylivingbaseIn.hasPlayerInfo())
-		{
+			if(facecamClient.displayWebcams && webcamEnabled(entitylivingbaseIn))
+			{
 				UUID uuid = entitylivingbaseIn.getUniqueID();
 				ResourceLocation TextureLocation = new ResourceLocation("webcams", "webcam/"+uuid.toString());
 					
@@ -53,7 +55,7 @@ public class CamLayer extends LayerRenderer<AbstractClientPlayerEntity, PlayerMo
 		       matrixStackIn.push();
 		       
 			   matrixStackIn.translate(0.0D, -0.25D, -0.25D);
-
+	
 		       this.getEntityModel().copyModelAttributesTo(this.camModel);
 		       this.camModel.setRotationAngles(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		       
@@ -66,7 +68,13 @@ public class CamLayer extends LayerRenderer<AbstractClientPlayerEntity, PlayerMo
 		       // Render cam and add to stack
 		       this.camModel.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		       matrixStackIn.pop();
-		}
+			}
+			
+	}
+	
+	public boolean webcamEnabled(AbstractClientPlayerEntity p)
+	{
+		return facecamClient.webcamData.uuidStream.get(p.getUniqueID()) != null;
 	}
   
 }

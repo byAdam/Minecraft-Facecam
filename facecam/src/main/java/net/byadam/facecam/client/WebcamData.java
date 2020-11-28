@@ -13,6 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.imageio.ImageIO;
 
+import org.apache.logging.log4j.LogManager;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
@@ -32,7 +34,15 @@ public class WebcamData implements Runnable{
 	
 	public void onNewImage(UUID uuid, byte[] image)
 	{
-		uuidRawImage.put(uuid, image);
+		if(image.length != 0)
+		{
+			uuidRawImage.put(uuid, image);
+		}
+		else
+		{
+			uuidStream.remove(uuid);
+		}
+
 	}
 	
 	public static WebcamData getInstance()

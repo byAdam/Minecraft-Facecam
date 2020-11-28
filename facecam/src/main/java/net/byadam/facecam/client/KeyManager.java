@@ -4,7 +4,12 @@ import java.awt.event.KeyEvent;
 
 import org.apache.logging.log4j.LogManager;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponentUtils;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
@@ -29,7 +34,7 @@ public class KeyManager {
 		ClientRegistry.registerKeyBinding(toggleDisplay);
 		
 		
-		// Assign facecamClient
+		// Assign variables
 		this.facecamClient = facecamClient;
 		
 		// Register Events
@@ -37,7 +42,7 @@ public class KeyManager {
 	}
 	
 	@SubscribeEvent
-    public void onClientTick(ClientTickEvent event)
+    void onClientTick(ClientTickEvent event)
     {
     	// Ignore if start tick
     	if(event.phase == Phase.START) { return; }
@@ -45,14 +50,53 @@ public class KeyManager {
         // check each enumerated key binding type for pressed and take appropriate action
         if(toggleWebcam.isPressed()) 
         {
-        	LogManager.getLogger().info("Toggle Webcam");
-        	facecamClient.transmitWebcam ^= true;
+        	onToggleWebcam();
         }
         
         if(toggleDisplay.isPressed()) 
         {
-        	LogManager.getLogger().info("Toggle Display");
-        	facecamClient.displayWebcam ^= true;
+        	onToggleDisplay();
         }
     }
+	
+	void onToggleWebcam()
+	{
+		ITextComponent message;
+		
+		if(facecamClient.transmitWebcam)
+		{
+			message = new StringTextComponent("§6§l[Facecam] §r§4Your Webcam Disabled");
+		}
+		else
+		{
+			message = new StringTextComponent("§6§l[Facecam] §r§2Your Webcam Enabled");
+		}
+	
+		
+
+		
+		Minecraft.getInstance().player.sendMessage(message, null);
+		
+		facecamClient.webcamSenderThread.toggleWebcam();
+	}
+	
+	void onToggleDisplay()
+	{
+		ITextComponent message;
+		
+		if(facecamClient.displayWebcams)
+		{
+			message = new StringTextComponent("§6§l[Facecam] §r§4All Webcams Disabled");
+		}
+		else
+		{
+			message = new StringTextComponent("§6§l[Facecam] §r§2All Webcams Enabled");
+		}
+	
+		
+		Minecraft.getInstance().player.sendMessage(message, null);
+		
+		
+    	facecamClient.displayWebcams ^= true;
+	}
 }

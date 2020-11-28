@@ -43,12 +43,15 @@ public class FacecamClient {
 	public KeyManager keyManager;
 	
 	public boolean transmitWebcam = true;
-	public boolean displayWebcam = true;
+	public boolean displayWebcams = true;
 
 	
 	public FacecamClient()
 	{
-        webcamSenderThread = new WebcamSenderThread();
+        webcamSenderThread = new WebcamSenderThread(this);
+        webcamSenderThread.toggleWebcam(true);
+        
+        
         webcamData = WebcamData.getInstance();
         
         addWebcamsToResourcePackList();
@@ -96,7 +99,7 @@ public class FacecamClient {
     	// Loops through each renderer in the skin maps
 		for (PlayerRenderer render : Minecraft.getInstance().getRenderManager().getSkinMap().values()) 
 		{
-		    render.addLayer(new CamLayer(render));
+		    render.addLayer(new CamLayer(render, this));
 		}
     }
 }
