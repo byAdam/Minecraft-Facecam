@@ -25,6 +25,7 @@ import net.minecraft.resources.FallbackResourceManager;
 import net.minecraft.resources.ResourcePackInfo.IFactory;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -37,82 +38,53 @@ public class FacecamClient {
 	
 	public FacecamClient()
 	{
-        // Add resource pack to pack list
-        Minecraft.getInstance().getResourcePackList().addPackFinder(new IPackFinder() {
-			@Override
-			public void findPacks(Consumer<ResourcePackInfo> infoConsumer, IFactory infoFactory) {
-				ResourcePackInfo resourcepackinfo = ResourcePackInfo.createResourcePack("webcams", true, () -> new WebcamsRP(), infoFactory, ResourcePackInfo.Priority.TOP, IPackNameDecorator.BUILTIN);
-		        infoConsumer.accept(resourcepackinfo);
-			}});
-        
-        // Reload all resource packs
-        Minecraft.getInstance().getResourcePackList().reloadPacksFromFinders();
-
         webcamSenderThread = new WebcamSenderThread();
         webcamData = webcamData.getInstance();
         
+        addWebcamsToResourcePackList();
+      	addWebcamsToTextureManager();
+        addCamLayerToPlayer();
+        
+        // Register to events
         MinecraftForge.EVENT_BUS.register(this);
+	}
+	
+	public void addWebcamsToResourcePackList()
+	{
+        // Add resource pack to pack list
+        Minecraft.getInstance().getResourcePackList().addPackFinder(new IPackFinder() {
+		@Override
+		public void findPacks(Consumer<ResourcePackInfo> infoConsumer, IFactory infoFactory) {
+			ResourcePackInfo resourcepackinfo = ResourcePackInfo.createResourcePack("webcams", true, () -> new WebcamsRP(), infoFactory, ResourcePackInfo.Priority.TOP, IPackNameDecorator.BUILTIN);
+	        infoConsumer.accept(resourcepackinfo);
+		}});
+        
+        // Reload all resource packs
+        Minecraft.getInstance().getResourcePackList().reloadPacksFromFinders();
 	}
 	
     public void addWebcamsToTextureManager()
     {
  	   SimpleReloadableResourceManager resourceManager =  ObfuscationReflectionHelper.getPrivateValue(TextureManager.class, Minecraft.getInstance().getTextureManager(), "resourceManager");
  	   //SimpleReloadableResourceManager resourceManager =  ObfuscationReflectionHelper.getPrivateValue(TextureManager.class, Minecraft.getInstance().getTextureManager(), "field_110582_d");
-    	
- 	   // If webcams already in texture manager's resource manager
- 	   if(resourceManager.getResourceNamespaces().contains("webcams")){return;}
 
- 	   
- 	   // If not, loop through all resource backs, find webcams, and add it
+ 	   // If not, loop through all resource backs, find webcam's, and add it
   	   for(ResourcePackInfo rp: Minecraft.getInstance().getResourcePackList().getEnabledPacks())
   	   {
-  			LogManager.getLogger().info("FOUND PACK"+rp.getName());
   		   if(rp.getName() == "webcams")
   		   {
-
   			   resourceManager.addResourcePack(rp.getResourcePack());
   		   }
   	   }
     }
 	
-    public void addCamLayerToPlayer(RenderPlayerEvent.Pre event)
+    public void addCamLayerToPlayer()
     {
-      	UUID playerUUID = event.getPlayer().getUniqueID();
-		for (PlayerRenderer render : event.getRenderer().getRenderManager().getSkinMap().values()) 
+    	// Loops through each renderer in the skin maps
+		for (PlayerRenderer render : Minecraft.getInstance().getRenderManager().getSkinMap().values()) 
 		{
-			LogManager.getLogger("cam layer add "+event.getPlayer().getName().toString());
-			CamLayer camLayer = new CamLayer(render);
-		    render.addLayer(camLayer);
+		    render.addLayer(new CamLayer(render));
 		}
     }
-    
-    
-    // When player is rendered
-	@SubscribeEvent
-    public void onPlayerRender(RenderPlayerEvent.Pre event) 
-    {
-    	// TODO: Move this somewhere better 
-    	addWebcamsToTextureManager();
-    		
-    	boolean hasCamLayer = false;
-    	// Checks if they have cam layer
-    	List<LayerRenderer> defaultLayers = ObfuscationReflectionHelper.getPrivateValue(LivingRenderer.class, event.getRenderer().getRenderManager().getSkinMap().get("default"), "layerRenderers");
-    	//List<LayerRenderer> defaultLayers = ObfuscationReflectionHelper.getPrivateValue(LivingRenderer.class, event.getRenderer().getRenderManager().getSkinMap().get("default"), "field_177097_h");
-
-      	for(LayerRenderer layer: defaultLayers)
-      	{
-		     if(layer.getClass() == CamLayer.class)
-  		     {
-  		    	 hasCamLayer = true;
-  		    	 break;
-  		     }
-      	}
-      	
-    	
-    	if(!hasCamLayer)
-    	{
-    		addCamLayerToPlayer(event);
-    	}
-    
-    }
+	
 }
