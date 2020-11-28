@@ -81,7 +81,7 @@ public  class WebcamsRP implements IResourcePack {
 			String stringUUID = location.getPath().split("/")[1];
   
     		UUID uuid = UUID.fromString(stringUUID);
-    		
+
     		ByteArrayOutputStream oStream = Facecam.facecamClient.webcamData.getInstance().uuidStream.get(uuid);
  
     		if(oStream != null)

@@ -48,7 +48,7 @@ public class WebcamData implements Runnable{
 	{
 		BufferedImage webcam = ImageIO.read(new ByteArrayInputStream(rawImage)); // 3ms
 		Graphics2D graphics = template.createGraphics(); // 0ms
-		graphics.drawImage(webcam, 28, 28, null); // 0ms
+		graphics.drawImage(webcam, 14, 14, null); // 0ms
 		ByteArrayOutputStream oStream = new ByteArrayOutputStream(); // 0ms
 		ImageIO.write(template, "JPEG", oStream); // 5mms
 		

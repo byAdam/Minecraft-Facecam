@@ -39,7 +39,7 @@ public class WebcamSenderThread implements Runnable {
 		{		
 			try {
 				loop();
-				Thread.sleep(40);
+				Thread.sleep(20);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -59,9 +59,9 @@ public class WebcamSenderThread implements Runnable {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			
 			BufferedImage oldCamImage = webcam.getImage();
-			Image scaledImage = oldCamImage.getScaledInstance(228, 228, Image.SCALE_FAST);
+			Image scaledImage = oldCamImage.getScaledInstance(114, 114, Image.SCALE_FAST);
 			
-			BufferedImage newCamImage = new BufferedImage(228, 228, BufferedImage.TYPE_INT_ARGB);
+			BufferedImage newCamImage = new BufferedImage(114, 114, BufferedImage.TYPE_INT_ARGB);
 		    Graphics2D graphics = newCamImage.createGraphics();
 		    graphics.drawImage(scaledImage, 0, 0, null);
 		    graphics.dispose();

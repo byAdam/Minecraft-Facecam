@@ -8,6 +8,8 @@ import java.util.function.Consumer;
 
 import org.apache.logging.log4j.LogManager;
 
+import net.minecraft.client.renderer.entity.layers.CapeLayer;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
@@ -55,7 +57,7 @@ public class FacecamClient {
     public void addWebcamsToTextureManager()
     {
  	   //SimpleReloadableResourceManager resourceManager =  ObfuscationReflectionHelper.getPrivateValue(TextureManager.class, Minecraft.getInstance().getTextureManager(), "resourceManager");
-    	SimpleReloadableResourceManager resourceManager =  ObfuscationReflectionHelper.getPrivateValue(TextureManager.class, Minecraft.getInstance().getTextureManager(), "field_110582_d");
+ 	   SimpleReloadableResourceManager resourceManager =  ObfuscationReflectionHelper.getPrivateValue(TextureManager.class, Minecraft.getInstance().getTextureManager(), "field_110582_d");
     	
  	   // If webcams already in texture manager's resource manager
  	   if(resourceManager.getResourceNamespaces().contains("webcams")){return;}
@@ -78,8 +80,8 @@ public class FacecamClient {
       	UUID playerUUID = event.getPlayer().getUniqueID();
 		for (PlayerRenderer render : event.getRenderer().getRenderManager().getSkinMap().values()) 
 		{
-	
-			CamLayer camLayer = new CamLayer(render, playerUUID);
+			LogManager.getLogger("cam layer add "+event.getPlayer().getName().toString());
+			CamLayer camLayer = new CamLayer(render);
 		    render.addLayer(camLayer);
 		}
     }
@@ -105,6 +107,7 @@ public class FacecamClient {
   		    	 break;
   		     }
       	}
+      	
     	
     	if(!hasCamLayer)
     	{
