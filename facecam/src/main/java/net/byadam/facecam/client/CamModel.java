@@ -34,11 +34,11 @@ public class CamModel extends AgeableModel {
 		
 		if(entityIn.isSneaking())
 		{
-			this.model.setRotationPoint(0, 8.2f, 4);
+			this.model.setRotationPoint(0, 8.2f, 3.99f);
 		}
 		else
 		{
-			this.model.setRotationPoint(0, 4, 4);
+			this.model.setRotationPoint(0, 4, 3.99f);
 		}
 	}
 }

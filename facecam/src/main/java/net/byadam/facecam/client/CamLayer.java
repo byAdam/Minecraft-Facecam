@@ -52,7 +52,7 @@ public class CamLayer extends LayerRenderer<AbstractClientPlayerEntity, PlayerMo
 			   // Setting up Cam model
 		       matrixStackIn.push();
 		       
-			   matrixStackIn.translate(0.0D, -0.251D, -0.25D);
+			   matrixStackIn.translate(0.0D, -0.25D, -0.25D);
 
 		       this.getEntityModel().copyModelAttributesTo(this.camModel);
 		       this.camModel.setRotationAngles(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
