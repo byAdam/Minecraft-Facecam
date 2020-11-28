@@ -54,7 +54,6 @@ public class WebcamSenderThread implements Runnable {
 				// If transmission enabled and connected to server
 				if(Facecam.facecamClient.transmitWebcam && clientPlayer != null)
 				{
-					LogManager.getLogger().info("Sending");
 					sendWebcam();
 				}
 
