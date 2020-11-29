@@ -17,9 +17,11 @@ public class FacecamMessage {
 
 	public static UUID uuid;
 	public static byte[] image;
+	public static Integer packetNo;
 	
-	public FacecamMessage(UUID uuid, byte[] image) {
+	public FacecamMessage(UUID uuid, Integer packetNo, byte[] image) {
 		this.uuid = uuid;
+		this.packetNo = packetNo;
 		this.image = image;
 	}
 
@@ -30,6 +32,7 @@ public class FacecamMessage {
 	
         
 		buf.writeString(stringUUID);
+		buf.writeInt(packetNo);
 		buf.writeBytes(image);
 		
 	}
@@ -42,11 +45,15 @@ public class FacecamMessage {
 		UUID newUUID = UUID.fromString(uuidBytes.toString(Charset.defaultCharset()));
 		buf.discardReadBytes();
 		
+		Integer packetNo = buf.getInt(0);
+		buf.readBytes(4);
+		buf.discardReadBytes();
+		
 		// Convert ByteBuf to to bytearray
 		byte imageBytes[] = new byte[buf.readableBytes()];
 	    buf.getBytes(buf.readerIndex(), imageBytes);
 		
-		return new FacecamMessage(newUUID, imageBytes);
+		return new FacecamMessage(newUUID, packetNo, imageBytes);
 	}
 
 	public static class Handler {
@@ -58,12 +65,12 @@ public class FacecamMessage {
 				
 				if(sender == null)
 				{
-					Facecam.facecamClient.webcamData.getInstance().onNewImage(uuid, image);
+					Facecam.facecamClient.webcamData.getInstance().onNewImage(uuid, packetNo, image);
 				}
 				
 				else
 				{
-					Facecam.packetHandler.sendToAll(new FacecamMessage(uuid, image));
+					Facecam.packetHandler.sendToAll(new FacecamMessage(uuid, packetNo, image));
 				}
 			});
 			ctx.get().setPacketHandled(true);

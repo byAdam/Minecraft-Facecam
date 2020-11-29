@@ -2,8 +2,6 @@ package net.byadam.facecam.client;
 
 import java.awt.event.KeyEvent;
 
-import org.apache.logging.log4j.LogManager;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;

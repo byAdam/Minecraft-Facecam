@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import net.byadam.facecam.client.FacecamClient;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -40,5 +41,11 @@ public class Facecam
     	facecamClient = new FacecamClient();
     }
 
+    @SubscribeEvent
+    public void onPlayerLeave(PlayerLoggedOutEvent event)
+    {
+    	FacecamMessage facecamMessage = new FacecamMessage(event.getPlayer().getUniqueID(), -1, new byte[0]);
+    	packetHandler.sendToServer(facecamMessage);
+    }
 
 }

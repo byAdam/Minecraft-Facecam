@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.apache.logging.log4j.LogManager;
-
 import net.minecraft.client.renderer.entity.layers.CapeLayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingRenderer;

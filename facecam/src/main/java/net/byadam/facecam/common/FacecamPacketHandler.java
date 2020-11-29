@@ -2,10 +2,12 @@ package net.byadam.facecam.common;
 
 import java.util.function.Supplier;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -29,7 +31,11 @@ public class FacecamPacketHandler {
 	
 	public void sendToServer(FacecamMessage msg)
 	{
-		INSTANCE.sendToServer(msg);
+		if(Minecraft.getInstance().getConnection() != null)
+		{
+			INSTANCE.sendToServer(msg);
+		}
+
 	}
 	
 	public void sendToAll(FacecamMessage msg)

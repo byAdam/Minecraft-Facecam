@@ -6,11 +6,12 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
-import org.apache.logging.log4j.LogManager;
 
 import com.github.sarxos.webcam.Webcam;
 
@@ -30,6 +31,7 @@ public class WebcamSenderThread implements Runnable {
 	ClientPlayerEntity clientPlayer;
 	FacecamClient facecamClient;
 	boolean toggleWebcam = false;
+	Integer packetNo = 0;
 	
 	public WebcamSenderThread(FacecamClient facecamClient)
 	{		
@@ -60,6 +62,13 @@ public class WebcamSenderThread implements Runnable {
 					uuid = Minecraft.getInstance().player.getUniqueID();
 				}
 				
+
+				// Remove image when you leave server
+				if(packetNo != 0 && clientPlayer == null)
+				{
+					sendWebcamOff();
+				}
+				
 				// If transmission enabled and connected to server
 				if(facecamClient.transmitWebcam && clientPlayer != null)
 				{
@@ -67,7 +76,7 @@ public class WebcamSenderThread implements Runnable {
 				}
 
 				
-				Thread.sleep(20);
+				Thread.sleep(10);
 			} 
 			catch (Exception e) 
 			{
@@ -119,21 +128,23 @@ public class WebcamSenderThread implements Runnable {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		
 		BufferedImage oldCamImage = webcam.getImage();
-		Image scaledImage = oldCamImage.getScaledInstance(128, 128, Image.SCALE_SMOOTH);
+		Image scaledImage = oldCamImage.getScaledInstance(96, 96, Image.SCALE_SMOOTH);
 		
-		BufferedImage newCamImage = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage newCamImage = new BufferedImage(192, 96, BufferedImage.TYPE_INT_RGB);
 	    Graphics2D graphics = newCamImage.createGraphics();
 	    graphics.drawImage(scaledImage, 0, 0, null);
 	    graphics.dispose();
 	    
 	    ImageIO.write(newCamImage, "JPEG", os);
-
-	    Facecam.packetHandler.sendToServer(new FacecamMessage(uuid, os.toByteArray()));
+	    
+	    Facecam.packetHandler.sendToServer(new FacecamMessage(uuid, packetNo, os.toByteArray()));
+	    packetNo += 1;
 	}
 	
 	public void sendWebcamOff()
 	{
-		Facecam.packetHandler.sendToServer(new FacecamMessage(uuid, new byte[0]));
+	    packetNo = 0;
+		Facecam.packetHandler.sendToServer(new FacecamMessage(uuid, -1, new byte[0]));
 	}
 
 

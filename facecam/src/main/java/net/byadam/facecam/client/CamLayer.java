@@ -4,7 +4,6 @@ import java.util.Map;
 
 import java.util.UUID;
 
-import org.apache.logging.log4j.LogManager;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

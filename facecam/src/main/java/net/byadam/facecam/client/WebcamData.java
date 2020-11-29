@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.imageio.ImageIO;
 
-import org.apache.logging.log4j.LogManager;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
@@ -22,6 +21,7 @@ public class WebcamData implements Runnable{
 	
 	public Map<UUID, ByteArrayOutputStream> uuidStream = new HashMap<UUID, ByteArrayOutputStream>();
 	Map<UUID, byte[]> uuidRawImage = new ConcurrentHashMap<UUID, byte[]>();
+	Map<UUID, Integer> uuidPacketNo = new ConcurrentHashMap<UUID, Integer>();
 	BufferedImage template;
 	public static WebcamData instance;
 	Thread t;
@@ -32,8 +32,17 @@ public class WebcamData implements Runnable{
 		t.start();
 	}
 	
-	public void onNewImage(UUID uuid, byte[] image)
+	public void onNewImage(UUID uuid, Integer packetNo, byte[] image)
 	{
+		Integer lastPacketNo = uuidPacketNo.get(uuid);
+		
+		if(packetNo == -1 || (lastPacketNo != null && packetNo <= lastPacketNo))
+		{
+			return;
+		}
+		
+		uuidPacketNo.put(uuid, packetNo);
+		
 		if(image.length != 0)
 		{
 			uuidRawImage.put(uuid, image);
@@ -41,8 +50,8 @@ public class WebcamData implements Runnable{
 		else
 		{
 			uuidStream.remove(uuid);
+			uuidPacketNo.remove(uuid);
 		}
-
 	}
 	
 	public static WebcamData getInstance()
@@ -57,13 +66,8 @@ public class WebcamData implements Runnable{
 	public void processRawImage(UUID uuid, byte[] rawImage) throws IOException
 	{
 		
-		BufferedImage webcam = ImageIO.read(new ByteArrayInputStream(rawImage)); // 3ms
-		Graphics2D graphics = template.createGraphics(); // 0ms
-		graphics.drawImage(webcam, 0, 0, null); // 0ms
-		ByteArrayOutputStream oStream = new ByteArrayOutputStream(); // 0ms
-		ImageIO.write(template, "JPEG", oStream); // 5ms
-		
-		oStream.write(rawImage, 0, rawImage.length);
+		ByteArrayOutputStream oStream = new ByteArrayOutputStream(); 
+		oStream.write(rawImage);
 		
 		uuidStream.put(uuid, oStream);
 	}
