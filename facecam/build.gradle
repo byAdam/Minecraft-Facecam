@@ -10,12 +10,6 @@ buildscript {
 }
 
 plugins {
-	// In order to run on AWS we must perform a task similer to that of the
-	// shade plugin in Maven, because AWS expects only a single JAR containing
-	// all the classes which are needed. Information on the plugin is here:
-	// https://plugins.gradle.org/plugin/com.github.johnrengelman.shadow
-	// Run this with `gradle shadowJar`
-	// Your JAR will be called: build/libs/iopipe-examples-1.0-all.jar
 	id 'com.github.johnrengelman.shadow' version '2.0.4'
 	
 	// This is a normal Gradle Java project, Gradle for the most part should
@@ -62,7 +56,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
+                facecam {
                     source sourceSets.main
                 }
             }
@@ -78,7 +72,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
+                facecam {
                     source sourceSets.main
                 }
             }
@@ -94,10 +88,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'facecam', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                examplemod {
+                facecam {
                     source sourceSets.main
                 }
             }
