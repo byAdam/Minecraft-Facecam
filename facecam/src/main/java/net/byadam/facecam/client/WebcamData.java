@@ -36,15 +36,16 @@ public class WebcamData implements Runnable{
 	{
 		Integer lastPacketNo = uuidPacketNo.get(uuid);
 		
-		if(packetNo == -1 || (lastPacketNo != null && packetNo <= lastPacketNo))
+		if(packetNo != -1 && lastPacketNo != null && packetNo <= lastPacketNo)
 		{
 			return;
 		}
-		
+
 		uuidPacketNo.put(uuid, packetNo);
-		
-		if(image.length != 0)
+
+		if(packetNo != -1 || image.length != 0)
 		{
+
 			uuidRawImage.put(uuid, image);
 		}
 		else

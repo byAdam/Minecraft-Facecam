@@ -19,6 +19,8 @@ import net.byadam.facecam.common.Facecam;
 import net.byadam.facecam.common.FacecamMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 
 
@@ -111,7 +113,17 @@ public class WebcamSenderThread implements Runnable {
 		
 		if(facecamClient.transmitWebcam)
 		{
-			webcam.open();
+			try
+			{
+				webcam.open();	
+			}
+			catch(Exception e)
+			{
+				ITextComponent message = new StringTextComponent("§6§l[Facecam] §r§4Your webcam is being used by another program. Please close the program and try again.");
+				Minecraft.getInstance().player.sendMessage(message, null);
+				facecamClient.transmitWebcam = false;
+			}
+			
 		}
 		else
 		{

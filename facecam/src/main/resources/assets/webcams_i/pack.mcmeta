@@ -1,6 +1,6 @@
 {
     "pack": {
-        "description": "Custom Resource Pack to store Webcam information",
+        "description": "A special resource pack to store webcam information for Minecraft Facecam",
         "pack_format": 6
     }
 }

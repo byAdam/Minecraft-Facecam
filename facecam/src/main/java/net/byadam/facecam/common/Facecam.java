@@ -1,8 +1,5 @@
 package net.byadam.facecam.common;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.byadam.facecam.client.FacecamClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
@@ -18,7 +15,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class Facecam
 {
     // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
     public static FacecamPacketHandler packetHandler = new FacecamPacketHandler();
     public static FacecamClient facecamClient;
 
