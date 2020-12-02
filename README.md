@@ -4,8 +4,10 @@ A Minecraft: Java Edition mod to replace your player's face with a live facecam.
 ![Demonstration](demonstration.gif)
 
 ## Downloads
-### Recommended: [1.16.4 - Beta 0.1.0](https://github.com/byAdam/Minecraft-Facecam/releases/tag/0.1.0)
-### Latest: [1.16.4 - Beta 0.1.0](https://github.com/byAdam/Minecraft-Facecam/releases/tag/0.1.0)
+### Recommended
+[**1.16.4 - Beta 0.1.0**](https://github.com/byAdam/Minecraft-Facecam/releases/tag/0.1.0)
+### Latest
+[**1.16.4 - Beta 0.1.0**](https://github.com/byAdam/Minecraft-Facecam/releases/tag/0.1.0)
 
 ## About
  - Made for [Minecraft Forge](http://files.minecraftforge.net/) 1.16.4 (35.1.0)
