@@ -5,6 +5,7 @@ A Minecraft: Java Edition mod to replace your player's face with a live facecam.
 
  - Works in multiplayer! 
    - Must be installed on server to work
+ - Make sure no other program is using your camera
  - Made for Minecraft Forge 1.16.4 (35.1.0)
  - Press **\[** to toggle your facecam
  - Press **\]** to toggle all facecams
