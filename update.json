@@ -1,0 +1,10 @@
+{
+  "homepage": "https://github.com/byAdam/Minecraft-Facecam",
+  "1.16.4": {
+    "0.1": "Beta Release"
+  },
+  "promos": {
+    "1.16.4-latest": "0.1",
+    "1.16.4-recommended": "0.1"
+  }
+}
