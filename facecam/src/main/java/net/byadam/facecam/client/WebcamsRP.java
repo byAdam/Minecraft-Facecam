@@ -145,7 +145,7 @@ public  class WebcamsRP implements IResourcePack {
     @Override
     public String getName()
     {
-    	return "Webcams RP";
+    	return "Facecam Internal";
     }
 
     @Nullable

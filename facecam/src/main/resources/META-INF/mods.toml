@@ -4,12 +4,12 @@ license="All rights reserved"
 issueTrackerURL="https://github.com/byAdam/Minecraft-Facecam/issues" #optional
 [[mods]] #mandatory
 modId="facecam" #mandatory
-version="${file.jarVersion}" #mandatory
+version="0.1.0" #mandatory
 displayName="Minecraft Facecam" #mandatory
 updateJSONURL="http://byadam.net/facecam/update.json" #optional
 
 ## Information
-displayURL="https://github.com/byAdam/Minecraft-Facecam" #optional
+displayURL="http://byadam.net/facecam" #optional
 
 # In root of the mod JAR
 logoFile="logo.png" #optional
@@ -19,25 +19,3 @@ credits="Adam Brady" #optional
 authors="Adam Brady" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description="Replace your player's face with a live facecam."
-
-# Depends on forge
-[[dependencies.facecam]] #optional
-    # the modid of the dependency
-    modId="forge" #mandatory
-    # Does this dependency have to exist - if not, ordering below must be specified
-    mandatory=true #mandatory
-    # The version range of the dependency
-    versionRange="[35,)" #mandatory
-    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
-    ordering="NONE"
-    # Side this dependency is applied on - BOTH, CLIENT or SERVER
-    side="BOTH"
- 
-# Depends on Minecraft
-[[dependencies.facecam]]
-    modId="minecraft"
-    mandatory=true
-# This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.16.4,1.17)"
-    ordering="NONE"
-    side="BOTH"

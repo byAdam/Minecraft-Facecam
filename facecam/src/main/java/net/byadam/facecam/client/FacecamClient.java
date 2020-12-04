@@ -69,8 +69,9 @@ public class FacecamClient {
         Minecraft.getInstance().getResourcePackList().addPackFinder(new IPackFinder() {
 		@Override
 		public void findPacks(Consumer<ResourcePackInfo> infoConsumer, IFactory infoFactory) {
-			ResourcePackInfo resourcepackinfo = ResourcePackInfo.createResourcePack("Minecraft Facecam Internal", true, () -> new WebcamsRP(), infoFactory, ResourcePackInfo.Priority.TOP, IPackNameDecorator.BUILTIN);
-	        infoConsumer.accept(resourcepackinfo);
+			ResourcePackInfo resourcepackinfo = ResourcePackInfo.createResourcePack("Facecam Internal", true, () -> new WebcamsRP(), infoFactory, ResourcePackInfo.Priority.TOP, IPackNameDecorator.BUILTIN);
+			ObfuscationReflectionHelper.setPrivateValue(ResourcePackInfo.class, resourcepackinfo, true, "hidden");
+			infoConsumer.accept(resourcepackinfo);
 		}});
         
         // Reload all resource packs
@@ -85,7 +86,7 @@ public class FacecamClient {
  	   // If not, loop through all resource backs, find webcam's, and add it
   	   for(ResourcePackInfo rp: Minecraft.getInstance().getResourcePackList().getEnabledPacks())
   	   {
-  		   if(rp.getName() == "Minecraft Facecam Internal")
+  		   if(rp.getName() == "Facecam Internal")
   		   {
   			   resourceManager.addResourcePack(rp.getResourcePack());
   		   }
